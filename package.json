@@ -8,7 +8,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test:eslint": "eslint .",
-    "test:tsc": "tsc"
+    "test:tsc": "tsc",
+    "postinstall": "husky install"
   },
   "dependencies": {
     "@react-navigation/native": "^6.1.7",
@@ -32,6 +33,7 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-universe": "^11.2.0",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^8.0.3",
     "prettier": "^2.8.8"
   },
   "private": true
