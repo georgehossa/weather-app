@@ -1,10 +1,29 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-const Login = () => {
+import { DrawerStackScreenProps } from '~navigation/types';
+
+type Props = DrawerStackScreenProps<'Login'>;
+
+const Login = ({ navigation }: Props) => {
+  const handleButtonClick = () => {
+    navigation.navigate('DrawerStack', { screen: 'HomeStack' });
+  };
   return (
     <View style={styles.container}>
       <Text>Login Screen</Text>
+      <Pressable onPress={handleButtonClick}>
+        <Text
+          style={{
+            color: 'blue',
+            fontWeight: 'bold',
+            marginTop: 20,
+            alignSelf: 'center',
+            fontSize: 20,
+          }}>
+          Login
+        </Text>
+      </Pressable>
     </View>
   );
 };
