@@ -6,6 +6,6 @@ describe('<Login />', () => {
   it('should render', () => {
     const { getByText } = render(<Login />);
 
-    expect(getByText('Login Screen')).toBeTruthy();
+    expect(getByText('Login')).toBeTruthy();
   });
 });
