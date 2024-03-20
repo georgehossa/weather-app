@@ -1,12 +1,15 @@
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const Splash: React.FC = () => {
+const SignUp = () => {
   return (
     <View style={styles.container}>
-      <Text>Splash Screen</Text>
+      <Text>SignUp Screen</Text>
     </View>
   );
 };
+
+export default SignUp;
 
 const styles = StyleSheet.create({
   container: {
@@ -16,5 +19,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-export default Splash;
