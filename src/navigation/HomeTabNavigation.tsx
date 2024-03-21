@@ -1,5 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { View } from 'react-native';
 
 import { HomeTabParamList } from './types';
 
@@ -7,8 +8,33 @@ import { Favorites, Home, Search } from '~screens';
 
 const HomeTabStack = createBottomTabNavigator<HomeTabParamList>();
 const commonOptions = {
+  tabBarShowLabel: false,
   headerShown: false,
   gestureEnabled: true,
+  tabBarStyle: {
+    position: 'absolute',
+    bottom: 24,
+    marginHorizontal: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#049AD9',
+    borderRadius: 16,
+    height: 72,
+    shadowColor: '#025C82',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+
+    elevation: 6,
+  },
+  tabBarItemStyle: {
+    height: 72,
+  },
+  tabBarActiveTintColor: '#fff',
+  tabBarInactiveTintColor: '#025C82',
 };
 
 const HomeTabNavigation = () => (
@@ -18,7 +44,6 @@ const HomeTabNavigation = () => (
       component={Home}
       options={{
         tabBarIcon: ({ color }) => <Feather name="home" size={24} color={color} />,
-        tabBarShowLabel: false,
       }}
     />
     <HomeTabStack.Screen
@@ -26,7 +51,6 @@ const HomeTabNavigation = () => (
       component={Search}
       options={{
         tabBarIcon: ({ color }) => <Feather name="search" size={24} color={color} />,
-        tabBarShowLabel: false,
       }}
     />
     <HomeTabStack.Screen
@@ -34,7 +58,6 @@ const HomeTabNavigation = () => (
       component={Favorites}
       options={{
         tabBarIcon: ({ color }) => <Feather name="heart" size={24} color={color} />,
-        tabBarShowLabel: false,
       }}
     />
   </HomeTabStack.Navigator>
