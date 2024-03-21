@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import DrawerNavigation from './DrawerNavigation';
+import HomeTabNavigation from './HomeTabNavigation';
 
 import type { RootStackParamList } from '~navigation/types';
 
@@ -11,8 +11,8 @@ const commonOptions = {
 };
 const RootNavigation = () => {
   return (
-    <RootStack.Navigator initialRouteName="Splash">
-      <RootStack.Screen name="DrawerStack" component={DrawerNavigation} options={commonOptions} />
+    <RootStack.Navigator initialRouteName="HomeStack">
+      <RootStack.Screen name="HomeStack" component={HomeTabNavigation} options={commonOptions} />
     </RootStack.Navigator>
   );
 };
