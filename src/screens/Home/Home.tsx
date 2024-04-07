@@ -1,11 +1,17 @@
-import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { StyleSheet, Text, View, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const WeatherCard = () => {
+import { getCurentWeather } from '~api/weather';
+
+const WeatherCard = ({ data }: any) => {
   return (
     <View>
-      <Text>Card</Text>
+      <Text>{data?.location?.name}</Text>
+      <Text>{data?.location?.country}</Text>
+      <Text>{data?.current?.temp_c}°</Text>
+      <Text>{data?.current?.condition?.text}</Text>
     </View>
   );
 };
@@ -27,13 +33,18 @@ const Forecast = () => {
 };
 
 const Home = () => {
+  const [location] = useState('London');
+  const { data } = useQuery({
+    queryKey: ['currentWeather', location],
+    queryFn: () => getCurentWeather(location),
+  });
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <Header />
       </View>
       <View style={styles.weatherContainer}>
-        <WeatherCard />
+        <WeatherCard data={data} />
       </View>
       <View style={styles.forecastContainer}>
         <Forecast />
