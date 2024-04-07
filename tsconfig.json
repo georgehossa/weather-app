@@ -3,12 +3,22 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "~*": ["src/*"],
-      "~components/*": ["src/components/*"],
-      "~navigation/*": ["src/navigation/*"],
-      "~screens/*": ["src/screens/index"]
+      "~*": [
+        "src/*"
+      ],
+      "~components/*": [
+        "src/components/*"
+      ],
+      "~navigation/*": [
+        "src/navigation/*"
+      ],
+      "~screens/*": [
+        "src/screens/index"
+      ]
     }
   },
-  "exclude": ["node_modules"],
+  "exclude": [
+    "node_modules"
+  ],
   "extends": "expo/tsconfig.base"
 }
