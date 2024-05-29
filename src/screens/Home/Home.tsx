@@ -4,17 +4,7 @@ import { StyleSheet, Text, View, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { getCurentWeather } from '~api/weather';
-
-const WeatherCard = ({ data }: any) => {
-  return (
-    <View>
-      <Text>{data?.location?.name}</Text>
-      <Text>{data?.location?.country}</Text>
-      <Text>{data?.current?.temp_c}°</Text>
-      <Text>{data?.current?.condition?.text}</Text>
-    </View>
-  );
-};
+import { WeatherCard } from '~components';
 
 const Header = () => {
   return (
@@ -33,8 +23,8 @@ const Forecast = () => {
 };
 
 const Home = () => {
-  const [location] = useState('London');
-  const { data } = useQuery({
+  const [location] = useState('Envigado');
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['currentWeather', location],
     queryFn: () => getCurentWeather(location),
   });
@@ -44,7 +34,7 @@ const Home = () => {
         <Header />
       </View>
       <View style={styles.weatherContainer}>
-        <WeatherCard data={data} />
+        <WeatherCard data={data} isLoading={isLoading} isError={isError} />
       </View>
       <View style={styles.forecastContainer}>
         <Forecast />
@@ -67,8 +57,9 @@ const styles = StyleSheet.create({
   },
   weatherContainer: {
     width: '100%',
+    alignItems: 'center',
     flex: 3,
-    backgroundColor: 'green',
+    padding: 16,
   },
   forecastContainer: {
     width: '100%',
