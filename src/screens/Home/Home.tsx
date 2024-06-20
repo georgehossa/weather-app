@@ -4,15 +4,7 @@ import { StyleSheet, Text, View, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { getCurentWeather } from '~api/weather';
-import { WeatherCard } from '~components';
-
-const Header = () => {
-  return (
-    <View>
-      <Text>Header</Text>
-    </View>
-  );
-};
+import { WeatherCard, Header } from '~components';
 
 const Forecast = () => {
   return (
@@ -52,8 +44,8 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     width: '100%',
-    backgroundColor: 'blue',
     height: 60,
+    paddingHorizontal: 16,
   },
   weatherContainer: {
     width: '100%',
