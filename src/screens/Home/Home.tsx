@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import * as Location from 'expo-location';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -15,11 +16,23 @@ const Forecast = () => {
 };
 
 const Home = () => {
-  const [location] = useState('Envigado');
+  const [location, setLocation] = useState('london');
   const { data, isLoading, isError } = useQuery({
     queryKey: ['currentWeather', location],
     queryFn: () => getCurentWeather(location),
   });
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync({});
+      setLocation(`${location.coords.latitude},${location.coords.longitude}`);
+    })();
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
