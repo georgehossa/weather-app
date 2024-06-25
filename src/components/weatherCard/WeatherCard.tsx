@@ -1,76 +1,54 @@
-import { useFonts } from 'expo-font';
+import { useQuery } from '@tanstack/react-query';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
 
-import * as Theme from '~theme';
+import { getCurentWeather } from '~api/weather';
+import { globalStyles } from '~styles/global';
+import { COLORS } from '~theme';
 
 const clouds = require('../../../assets/images/clouds.png');
 
-type Location = {
-  name: string;
-  country: string;
-  region: string;
-};
-type Current = {
-  temp_c: number;
-  wind_kph: number;
-  humidity: number;
-  condition: { text: string; icon: string };
-  is_day: 1 | 0;
-};
 type WeatherCardProps = {
-  data: {
-    location: Location;
-    current: Current;
-  };
-  isLoading: boolean;
-  isError: boolean;
+  location: string;
 };
-const WeatherCard = ({ data, isLoading, isError }: WeatherCardProps) => {
+const WeatherCard = ({ location }: WeatherCardProps) => {
   const [isDay, setIsDay] = useState<boolean | null>(null);
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['currentWeather', location],
+    queryFn: () => getCurentWeather(location),
+  });
+
   useEffect(() => {
     if (data) {
       setIsDay(data.current.is_day === 1);
     }
   }, [data]);
-  // TODO: Take this fonts to an upper layer to make these accesyble to other components
-  const [fontLoaded] = useFonts({
-    'Sono-Bold': require('../../../assets/fonts/Sono-Bold.ttf'),
-    'Sono-Regular': require('../../../assets/fonts/Sono-Regular.ttf'),
-    'Sono-Ligth': require('../../../assets/fonts/Sono-Light.ttf'),
-  });
-  if (!fontLoaded) {
-    return null;
-  }
   return (
-    <View style={[styles.container, styles.shadowProp]}>
+    <View style={[styles.container, globalStyles.cardShadow]}>
       <LinearGradient
-        colors={isDay ? Theme.COLORS.gradient.day : Theme.COLORS.gradient.night}
+        colors={isDay ? COLORS.gradient.day : COLORS.gradient.night}
         style={styles.gradient}>
         <View style={styles.header}>
           <View>
             <Text
               style={[
-                styles.fontBold,
-                styles.headingH1,
-                isDay ? styles.textBlack : styles.textWhite,
+                globalStyles.headingH1,
+                isDay ? globalStyles.colorBlack : globalStyles.colorWhite,
               ]}>
               {!isLoading && !isError ? data?.location?.name : 'Loading...'}
             </Text>
             <Text
               style={[
-                styles.fontLight,
-                styles.textSmall,
-                isDay ? styles.textBlack : styles.textWhite,
+                globalStyles.paragraphSmall,
+                isDay ? globalStyles.colorBlack : globalStyles.colorWhite,
               ]}>
               {!isLoading && !isError ? data?.location?.region : 'Loading...'}
             </Text>
             <Text
               style={[
-                styles.fontLight,
-                styles.textSmall,
-                isDay ? styles.textBlack : styles.textWhite,
+                globalStyles.paragraphSmall,
+                isDay ? globalStyles.colorBlack : globalStyles.colorWhite,
               ]}>
               {!isLoading && !isError ? data?.location?.country : 'Loading...'}
             </Text>
@@ -78,9 +56,8 @@ const WeatherCard = ({ data, isLoading, isError }: WeatherCardProps) => {
           <View>
             <Text
               style={[
-                styles.fontBold,
-                styles.textBig,
-                isDay ? styles.textBlack : styles.textWhite,
+                globalStyles.paragraphLargeBold,
+                isDay ? globalStyles.colorBlack : globalStyles.colorWhite,
               ]}>
               {!isLoading && !isError ? Math.trunc(data?.current?.temp_c) : 0}°
             </Text>
@@ -98,27 +75,25 @@ const WeatherCard = ({ data, isLoading, isError }: WeatherCardProps) => {
 
           <Text
             style={[
-              styles.fontBold,
-              styles.textSmall,
-              isDay ? styles.textBlack : styles.textWhite,
+              globalStyles.paragraphSmallBold,
+              isDay ? globalStyles.colorBlack : globalStyles.colorWhite,
             ]}>
             {!isLoading && !isError ? data?.current?.condition?.text : `Can't find the city`}
           </Text>
         </View>
         <ImageBackground source={clouds} style={styles.footer}>
           <View style={styles.footerLeft}>
-            <Text style={[styles.fontBold, styles.headingH3]}>
+            <Text style={globalStyles.headingH3}>
               {`${!isLoading && !isError ? data?.current?.wind_kph : 0} kph`}
             </Text>
-            <Text style={[styles.fontLight, styles.textSmall]}>Wind</Text>
+            <Text style={globalStyles.paragraphSmall}>Wind</Text>
           </View>
           <View style={styles.footerRight}>
             <Text
-              style={[
-                styles.fontBold,
-                styles.headingH3,
-              ]}>{`${!isLoading && !isError ? data?.current?.humidity : 0}%`}</Text>
-            <Text style={[styles.fontLight, styles.textSmall]}>Humidity</Text>
+              style={
+                globalStyles.headingH3
+              }>{`${!isLoading && !isError ? data?.current?.humidity : 0}%`}</Text>
+            <Text style={globalStyles.paragraphSmall}>Humidity</Text>
           </View>
         </ImageBackground>
       </LinearGradient>
@@ -130,21 +105,10 @@ export default WeatherCard;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Theme.COLORS.white,
+    backgroundColor: COLORS.white,
     borderRadius: 16,
     flex: 1,
     width: '100%',
-  },
-  shadowProp: {
-    shadowColor: Theme.COLORS.blue.accent,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
   },
   gradient: {
     position: 'absolute',
@@ -165,33 +129,6 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     borderColor: 'red',
     height: 200,
-  },
-  fontBold: {
-    fontFamily: 'Sono-Bold',
-  },
-  fontLight: {
-    fontFamily: 'Sono-Ligth',
-  },
-  fontRegular: {
-    fontFamily: 'Sono-Regular',
-  },
-  headingH1: {
-    fontSize: 32,
-  },
-  headingH3: {
-    fontSize: 19,
-  },
-  textSmall: {
-    fontSize: 12,
-  },
-  textBig: {
-    fontSize: 48,
-  },
-  textWhite: {
-    color: Theme.COLORS.white,
-  },
-  textBlack: {
-    color: Theme.COLORS.black,
   },
   header: {
     flexDirection: 'row',

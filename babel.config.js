@@ -12,6 +12,7 @@ module.exports = function (api) {
             '^~components(.+)': './src/components',
             '^~navigation(.+)': './src/navigation',
             '^~screens(.+)': './src/screens',
+            '^~types(.+)': './src/types',
           },
           extension: ['.ts', '.tsx', '.js', '.jsx'],
         },
