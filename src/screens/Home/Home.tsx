@@ -1,26 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
+import { useFonts } from 'expo-font';
 import * as Location from 'expo-location';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Platform } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { getCurentWeather } from '~api/weather';
-import { WeatherCard, Header } from '~components';
-
-const Forecast = () => {
-  return (
-    <View>
-      <Text>Forecast</Text>
-    </View>
-  );
-};
+import { WeatherCard, Header, Forecast } from '~components';
 
 const Home = () => {
   const [location, setLocation] = useState('london');
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['currentWeather', location],
-    queryFn: () => getCurentWeather(location),
-  });
+  // TODO: move this logic to a custom hook
   useEffect(() => {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -33,16 +21,25 @@ const Home = () => {
       setLocation(`${location.coords.latitude},${location.coords.longitude}`);
     })();
   }, []);
+
+  const [fontLoaded] = useFonts({
+    'Sono-Bold': require('../../../assets/fonts/Sono-Bold.ttf'),
+    'Sono-Regular': require('../../../assets/fonts/Sono-Regular.ttf'),
+    'Sono-Ligth': require('../../../assets/fonts/Sono-Light.ttf'),
+  });
+  if (!fontLoaded) {
+    return null;
+  }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <Header />
       </View>
       <View style={styles.weatherContainer}>
-        <WeatherCard data={data} isLoading={isLoading} isError={isError} />
+        <WeatherCard location={location} />
       </View>
       <View style={styles.forecastContainer}>
-        <Forecast />
+        <Forecast location={location} />
       </View>
     </SafeAreaView>
   );
@@ -68,7 +65,6 @@ const styles = StyleSheet.create({
   },
   forecastContainer: {
     width: '100%',
-    backgroundColor: 'purple',
     marginBottom: Platform.OS === 'ios' ? 90 : 120,
   },
 });

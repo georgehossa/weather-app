@@ -1,15 +1,18 @@
 import { Feather } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {
+  BottomTabNavigationOptions,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 
 import { HomeTabParamList } from './types';
 
 import { Favorites, Home, Search } from '~screens';
+import { COLORS } from '~theme';
 
 const HomeTabStack = createBottomTabNavigator<HomeTabParamList>();
-const commonOptions = {
+const commonOptions: BottomTabNavigationOptions = {
   tabBarShowLabel: false,
   headerShown: false,
-  gestureEnabled: true,
   tabBarStyle: {
     position: 'absolute',
     bottom: 24,
@@ -17,9 +20,9 @@ const commonOptions = {
     marginHorizontal: 16,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#049AD9',
+    backgroundColor: COLORS.blue.default,
     borderRadius: 16,
-    shadowColor: '#025C82',
+    shadowColor: COLORS.blue.accent,
     shadowOffset: {
       width: 0,
       height: 3,
@@ -32,8 +35,8 @@ const commonOptions = {
   tabBarItemStyle: {
     height: 80,
   },
-  tabBarActiveTintColor: '#fff',
-  tabBarInactiveTintColor: '#025C82',
+  tabBarActiveTintColor: COLORS.white,
+  tabBarInactiveTintColor: COLORS.blue.accent,
 };
 
 const HomeTabNavigation = () => (
