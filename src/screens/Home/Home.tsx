@@ -1,13 +1,17 @@
-import { useFonts } from 'expo-font';
+import { RouteProp, useRoute } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import { useEffect, useState } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { WeatherCard, Header, Forecast } from '~components';
+import { HomeTabParamList } from '~navigation/types';
+
+type HomeScreenRouteProp = RouteProp<HomeTabParamList, 'Home'>;
 
 const Home = () => {
   const [location, setLocation] = useState('london');
+  const route = useRoute<HomeScreenRouteProp>();
   // TODO: move this logic to a custom hook
   useEffect(() => {
     (async () => {
@@ -18,18 +22,16 @@ const Home = () => {
       }
 
       const location = await Location.getCurrentPositionAsync({});
-      setLocation(`${location.coords.latitude},${location.coords.longitude}`);
+      if (!route.params) {
+        setLocation(`${location.coords.latitude},${location.coords.longitude}`);
+      } else {
+        if (route.params && 'place' in route.params) {
+          setLocation(`id:${route.params?.place?.id}`);
+        }
+      }
     })();
-  }, []);
+  }, [route]);
 
-  const [fontLoaded] = useFonts({
-    'Sono-Bold': require('../../../assets/fonts/Sono-Bold.ttf'),
-    'Sono-Regular': require('../../../assets/fonts/Sono-Regular.ttf'),
-    'Sono-Ligth': require('../../../assets/fonts/Sono-Light.ttf'),
-  });
-  if (!fontLoaded) {
-    return null;
-  }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>

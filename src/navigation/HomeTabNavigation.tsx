@@ -3,6 +3,7 @@ import {
   BottomTabNavigationOptions,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
+import { useFonts } from 'expo-font';
 
 import { HomeTabParamList } from './types';
 
@@ -39,30 +40,46 @@ const commonOptions: BottomTabNavigationOptions = {
   tabBarInactiveTintColor: COLORS.blue.accent,
 };
 
-const HomeTabNavigation = () => (
-  <HomeTabStack.Navigator initialRouteName="Home" screenOptions={commonOptions}>
-    <HomeTabStack.Screen
-      name="Home"
-      component={Home}
-      options={{
-        tabBarIcon: ({ color }) => <Feather name="home" size={24} color={color} />,
-      }}
-    />
-    <HomeTabStack.Screen
-      name="Search"
-      component={Search}
-      options={{
-        tabBarIcon: ({ color }) => <Feather name="search" size={24} color={color} />,
-      }}
-    />
-    <HomeTabStack.Screen
-      name="Favorites"
-      component={Favorites}
-      options={{
-        tabBarIcon: ({ color }) => <Feather name="heart" size={24} color={color} />,
-      }}
-    />
-  </HomeTabStack.Navigator>
-);
+const HomeTabNavigation = () => {
+  const [fontLoaded] = useFonts({
+    'Sono-Bold': require('../../assets/fonts/Sono-Bold.ttf'),
+    'Sono-Regular': require('../../assets/fonts/Sono-Regular.ttf'),
+    'Sono-Ligth': require('../../assets/fonts/Sono-Light.ttf'),
+  });
+  if (!fontLoaded) {
+    return null;
+  }
+  return (
+    <HomeTabStack.Navigator initialRouteName="Home" screenOptions={commonOptions}>
+      <HomeTabStack.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarIcon: ({ color }) => <Feather name="home" size={24} color={color} />,
+        }}
+      />
+      <HomeTabStack.Screen
+        name="Search"
+        component={Search}
+        options={{
+          tabBarIcon: ({ color }) => <Feather name="search" size={24} color={color} />,
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: COLORS.blue.accent,
+            borderBottomColor: COLORS.blue.accent,
+          },
+          headerTintColor: COLORS.white,
+        }}
+      />
+      <HomeTabStack.Screen
+        name="Favorites"
+        component={Favorites}
+        options={{
+          tabBarIcon: ({ color }) => <Feather name="heart" size={24} color={color} />,
+        }}
+      />
+    </HomeTabStack.Navigator>
+  );
+};
 
 export default HomeTabNavigation;
