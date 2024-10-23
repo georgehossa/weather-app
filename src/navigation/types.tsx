@@ -2,6 +2,8 @@ import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
+import { Place } from '~types/search.types';
+
 export type RootStackParamList = {
   HomeStack: NavigatorScreenParams<HomeTabParamList> | undefined;
 };
@@ -12,7 +14,7 @@ export type RootStackScreenProps<T extends keyof RootStackParamList> = NativeSta
 >;
 
 export type HomeTabParamList = {
-  Home: undefined;
+  Home: { place?: Place };
   Search: undefined;
   Favorites: undefined;
 };
@@ -24,6 +26,6 @@ export type HomeTabScreenProps<T extends keyof HomeTabParamList> = CompositeScre
 
 declare global {
   namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList { }
+    interface RootParamList extends RootStackParamList {}
   }
 }

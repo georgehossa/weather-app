@@ -14,3 +14,9 @@ export const getForecast = async (query: string) => {
   const { data } = await axios.get(`${API}/forecast.json?key=${KEY}${q}&days=1`);
   return data;
 };
+
+export const getPlaces = async (query: string) => {
+  const q = `&q=${query}`;
+  const { data } = await axios.get(`${API}/search.json?key=${KEY}${q}&limit=5`);
+  return data;
+};
